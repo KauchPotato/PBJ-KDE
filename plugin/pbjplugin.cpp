@@ -5,6 +5,7 @@
 
 #include "pbjplugin.h"
 #include "Artwork.h"
+#include "MprisListener.h"
 
 // KF
 #include <KLocalizedString>
@@ -26,6 +27,7 @@ void PBJPlugin::registerTypes(const char *uri) {
   qmlRegisterSingletonType(uri, 1, 0, "HelloWorld",
                            singletonTypeExampleProvider);
   qmlRegisterType<Artwork>(uri, 1, 0, "Artwork");
+  qmlRegisterType<MprisListener>(uri, 1, 0, "MprisListener");
 }
 
 #include "moc_pbjplugin.cpp"

@@ -1,4 +1,5 @@
 #include "Artwork.h"
+#include "QtDBus/qdbusmessage.h"
 #include "QtNetwork/qnetworkaccessmanager.h"
 #include "QtNetwork/qnetworkrequest.h"
 #include "qhashfunctions.h"
@@ -12,6 +13,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTextStream>
+#include <QtDBus/QDBusMessage>
 #include <QtNetwork/QNetworkReply>
 
 static void log(const QString &msg) {
@@ -52,7 +54,11 @@ void Artwork::fetchArtwork() {
   loading = true;
   Q_EMIT loadingChanged();
   log(QStringLiteral("Starting request to: ") + artwork_url);
-  manager->get(QNetworkRequest(QUrl(artwork_url)));
+  QNetworkRequest request{QUrl(artwork_url)};
+  request.setHeader(QNetworkRequest::UserAgentHeader,
+                    QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X "
+                                   "10_15_7) AppleWebKit/537.36"));
+  manager->get(request);
 }
 
 void Artwork::onReplyFinished(QNetworkReply *reply) {
@@ -67,9 +73,11 @@ void Artwork::onReplyFinished(QNetworkReply *reply) {
   if (reply->error() == QNetworkReply::NoError) {
     QByteArray data = reply->readAll();
     log(QStringLiteral("Data length: ") + QString::number(data.size()));
+    log(QString::fromUtf8(data));
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (doc.isNull()) {
       log(QStringLiteral("JSON parsing failed - response is not valid JSON"));
+      log(QString::fromUtf8(doc.toJson(QJsonDocument::Indented)));
     } else {
       log(QString::fromUtf8(doc.toJson(QJsonDocument::Indented)));
       QJsonObject obj = doc.object();

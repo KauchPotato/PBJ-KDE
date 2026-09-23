@@ -8,6 +8,7 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasmoid
+import QtQuick.Effects
 import "Plugin"
 
 WallpaperItem {
@@ -16,41 +17,43 @@ WallpaperItem {
     Artwork {
         id: artwork
         Component.onCompleted: {
-            console.log("Artwork Component.onCompleted fired")
+          artwork.setArtworkUrl(listener.artUrl)
+          artwork.fetchArtwork()
         }
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: false
-        onTriggered: {
-            console.log("Timer fired, calling fetchArtwork")
-            artwork.setArtworkUrl("https://jsonplaceholder.typicode.com/photos/1")
-            artwork.fetchArtwork()
-        }
+      }
+    MprisListener{
+      id: listener
+      onPlayersChanged:{
+        console.log("Available players:",players)
+      }
+      onMetadataChanged:{
+        console.log("Song:",artUrl)
+      }
     }
 
     Rectangle {
         anchors.fill: parent
         color: Kirigami.Theme.backgroundColor
+      }
+    Image{
+      id: pp
+      source: listener.artUrl
+      anchors.fill: parent
+      fillMode: Image.PreserveAspectCrop
+      visible: false
     }
-
-    ColumnLayout {
-        anchors.centerIn: parent
-
-        Kirigami.Heading {
-            Layout.alignment: Qt.AlignCenter
-            level: 1
-            text: wallpaper.configuration.DisplayText ||
-                  i18n("<Please configure a text to display>")
-        }
-        Image{
-            source: wallpaper.configuration.CoverArt
-        }
-        PlasmaComponents.Label {
-            Layout.alignment: Qt.AlignCenter
-            text: HelloWorld.text
-        }
+    MultiEffect {
+      source: pp
+      anchors.fill: pp
+      blurEnabled: true
+      blur: 1         
+      blurMax: 100         
+      blurMultiplier: 10
+      autoPaddingEnabled: true
+    }
+    Image{
+      anchors.centerIn: parent
+      id: front
+      source: listener.artUrl
     }
 }

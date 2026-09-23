@@ -28,6 +28,8 @@ public:
 
   Q_INVOKABLE void fetchArtwork();
 
+  void fetchFromDBus();
+
 Q_SIGNALS:
   void artworkurlChanged();
   void loadingChanged();

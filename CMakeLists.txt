@@ -19,6 +19,7 @@ find_package(Qt6 CONFIG REQUIRED COMPONENTS
     Gui
     Core
     Network
+    DBus
 )
 
 find_package(Plasma CONFIG REQUIRED)
