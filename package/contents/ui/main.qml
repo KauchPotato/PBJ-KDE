@@ -13,6 +13,24 @@ import "Plugin"
 WallpaperItem {
     id: root
 
+    Artwork {
+        id: artwork
+        Component.onCompleted: {
+            console.log("Artwork Component.onCompleted fired")
+        }
+    }
+
+    Timer {
+        interval: 1000
+        running: true
+        repeat: false
+        onTriggered: {
+            console.log("Timer fired, calling fetchArtwork")
+            artwork.setArtworkUrl("https://jsonplaceholder.typicode.com/photos/1")
+            artwork.fetchArtwork()
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: Kirigami.Theme.backgroundColor

@@ -18,6 +18,7 @@ find_package(Qt6 CONFIG REQUIRED COMPONENTS
     Qml
     Gui
     Core
+    Network
 )
 
 find_package(Plasma CONFIG REQUIRED)

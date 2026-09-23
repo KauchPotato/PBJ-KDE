@@ -9,19 +9,18 @@
 
 class Artwork : public QObject {
   Q_OBJECT
-  Q_PROPERTY(QString trackName READ trackName NOTIFY trackNameChanged)
-  Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
-  Q_PROPERTY(QString error READ error NOTIFY errorChanged)
+  Q_PROPERTY(QString artwork_url READ getArtworkUrl NOTIFY artworkurlChanged)
+  Q_PROPERTY(bool loading READ getLoading NOTIFY loadingChanged)
+  Q_PROPERTY(QString error READ getError NOTIFY errorChanged)
 
 public:
   explicit Artwork(QObject *parent = nullptr);
 
   Q_INVOKABLE QString trackName() const;
-  Q_INVOKABLE bool loading() const;
-  Q_INVOKABLE QString error() const;
-
   Q_INVOKABLE QString getArtworkUrl();
   Q_INVOKABLE QString getPath();
+  Q_INVOKABLE QString getError();
+  Q_INVOKABLE bool getLoading();
 
   Q_INVOKABLE void setPath(QString new_path);
   Q_INVOKABLE void setArtworkUrl(QString new_artwork_url);
@@ -29,12 +28,12 @@ public:
 
   Q_INVOKABLE void fetchArtwork();
 
-signals:
-  void trackNameChanged();
+Q_SIGNALS:
+  void artworkurlChanged();
   void loadingChanged();
   void errorChanged();
 
-private slots:
+private Q_SLOTS:
   void onReplyFinished(QNetworkReply *reply);
 
 private:
@@ -42,7 +41,7 @@ private:
   QString name;
   QString artwork_url;
   QString path;
-  QString m_error;
-  bool m_loading;
+  QString error;
+  bool loading;
 };
 #endif // !ARTWORKH
