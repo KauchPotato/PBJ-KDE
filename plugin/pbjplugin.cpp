@@ -4,7 +4,6 @@
 */
 
 #include "pbjplugin.h"
-#include "Artwork.h"
 #include "MprisListener.h"
 
 // KF
