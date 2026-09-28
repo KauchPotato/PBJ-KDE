@@ -1,6 +1,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_org.kde.plasma.pbj\")
 
-add_library(pbjplugin SHARED pbjplugin.cpp Artwork.cpp MprisListener.cpp)
+add_library(pbjplugin SHARED pbjplugin.cpp MprisListener.cpp)
 
 target_link_libraries(pbjplugin
     KF6::I18n
