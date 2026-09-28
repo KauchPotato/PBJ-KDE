@@ -13,14 +13,6 @@ import "Plugin"
 
 WallpaperItem {
     id: root
-
-    Artwork {
-        id: artwork
-        Component.onCompleted: {
-          artwork.setArtworkUrl(listener.artUrl)
-          artwork.fetchArtwork()
-        }
-      }
     MprisListener{
       id: listener
       onPlayersChanged:{
